@@ -1,5 +1,5 @@
 {
-  "dependencies": { "@types/uuid": "^9.0.7", "uuid": "^9.0.1" },
+  "dependencies": { "@types/uuid": "^9.0.7", "reflect-metadata": "^0.1.13", "sequelize": "^6.35.0", "sequelize-typescript": "^2.1.5", "uuid": "^9.0.1" },
   "devDependencies": {
     "bun-types": "^1.0.13",
     "tslint": "^6.1.3",
