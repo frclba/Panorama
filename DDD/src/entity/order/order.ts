@@ -25,10 +25,15 @@ export default class Order {
         if(this._items.length === 0){
             throw new Error("Item quantity must be greater than zero");
         }  
+
+        if(this._items.some(item => item.quantity <= 0)){
+            throw new Error("Item quantity must be greater than zero");
+        }
+
         return true;
     }
 
     total(): number {
-        return this._items.reduce((total, item) => total + item.price, 0);
+        return this._items.reduce((total, item) => total + item.orderItemTotal(), 0);
     }
 }
