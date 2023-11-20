@@ -51,6 +51,15 @@ export default class CustomerRepository extends PrismaRepository implements Cust
     }
 
     async findAll(): Promise<Customer[]> {
-      throw new Error("Method not implemented.");
+        const customers = await this.prisma.customer.findMany();
+        if (customers.length > 0) {
+            return customers.map(customer => {
+                const address = new Address(customer.street, customer.city, customer.state, customer.zip, customer.country);
+                const customerModel = new Customer(customer.id, customer.name, customer.email);
+                customerModel.changeAddress(address);
+                return customerModel;
+            });
+        }
+        else throw new Error("Customers not found");
     }
 }

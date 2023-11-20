@@ -3,6 +3,7 @@ import {PrismaClient} from "@prisma/client";
 import Customer from "../../../domain/entity/customer/customer";
 import CustomerRepository from "./customer.repository";
 import Address from "../../../domain/entity/address/address";
+import exp from "constants";
 
 describe("Customer repository test", async () => {
     let prisma: PrismaClient; 
@@ -36,10 +37,24 @@ describe("Customer repository test", async () => {
     });
 
     test("should find a Customer by id", async () => {
-       
+        const customerRepository = new CustomerRepository();
+        const customerModel = new Customer("5", "Customer 5", "unique@test.com")
+        customerModel.changeAddress(new Address("Street 5", "City 5", "State 5", "Zip 5", "Country 5"));
+        await customerRepository.create(customerModel);
+        const customerSearch = await customerRepository.findById("5");
+        expect(customerModel).toEqual(customerSearch);
     });
 
     test("should find all Customers", async () => {
-      
+        const customerRepository = new CustomerRepository();
+        const customersPrisma = await prisma.customer.findMany();
+        const customers = await customerRepository.findAll();
+        const customersExpected = customersPrisma.map(customer => {
+            const address = new Address(customer.street, customer.city, customer.state, customer.zip, customer.country);
+            const customerModel = new Customer(customer.id, customer.name, customer.email);
+            customerModel.changeAddress(address);
+            return customerModel;
+        });
+        expect(customers).toEqual(customersExpected);
     });
 });
