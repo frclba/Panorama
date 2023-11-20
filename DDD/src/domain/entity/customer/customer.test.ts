@@ -24,14 +24,14 @@ describe("Customer", () => {
     test("should activate client", () => {
         const customer = new Customer("1",  "Customer 1", "john@doe.com");
         const address = new Address("Street 1", "City 1", "State 1", "Zip 1", "Country 1");
-        customer.Address = address;
+        customer.changeAddress(address);
         customer.activate();
         expect(customer.isActive).toBe(true);
     });
     test("should activate client", () => {
         const customer = new Customer("1", "Customer 1", "john@doe.com");
         const address = new Address("Street 1", "City 1", "State 1", "Zip 1", "Country 1");
-        customer.Address = address;
+        customer.changeAddress(address);
         customer.activate();
         expect(customer.isActive).toBe(true);
         customer.deactivate();

@@ -67,11 +67,12 @@ export default class Customer {
     deactivate() {
         this._active = false;
     }
+
     addRewardPoints(points: number) {
         this._rewardPoints += points;
     }
     
-    set Address(address: Address) {
+    changeAddress(address: Address) {
         this._address = address;
     }
 
