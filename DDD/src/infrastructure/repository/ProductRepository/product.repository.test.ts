@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test } from "bun:test";
 import {PrismaClient} from "@prisma/client";
-import Product from "../../domain/entity/product/product";
+import Product from "../../../domain/entity/product/product";
 import ProductRepository from "./product.repository";
 
 describe("product repository test", async () => {

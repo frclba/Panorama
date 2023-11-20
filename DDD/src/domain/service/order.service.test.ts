@@ -6,7 +6,7 @@ import Customer from "../entity/customer/customer";
 
 describe("OrderService", () => {
     test("should place an order", () => {
-        const customer = new Customer("c1", "Customer 1");        
+        const customer = new Customer("c1", "Customer 1", "john@doe.com");        
         const item1 = new OrderItem("1", "Product 1", 1, 100);
         const item2 = new OrderItem("2", "Product 1", 2, 200);
         const order = OrderService.placeOrder(customer, [item1, item2]);
