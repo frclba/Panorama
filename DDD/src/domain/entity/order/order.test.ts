@@ -19,8 +19,8 @@ describe("Order", () => {
         }).toThrow("Item quantity must be greater than zero");
     })
     test("Should calculate total", () => {
-        const item1 = new OrderItem("i1", "Item 1", 1, 100);
-        const item2 = new OrderItem("i2", "Item 1", 1, 200);
+        const item1 = new OrderItem(1, "i1", "Item 1", 1, 100);
+        const item2 = new OrderItem(2, "i2", "Item 1", 1, 200);
         const order = new Order("123", "123", [item1, item2]);
         const orderTotal = order.total();
         expect(orderTotal).toBe(300);
