@@ -1,7 +1,7 @@
 import { describe, expect, it, spyOn } from "bun:test";
 import EventDispatcher from "./event-dispatcher";
 import SendEmailWhenProductIsCreatedHandler from "../product/handler/send-email-when-product-is-created.handler";
-import ProductCreatedEvent from "../product/product-create.envent";
+import ProductCreatedEvent from "../product/product-create.event";
 
 describe("EventDispatcher", () => {
     it("should dispatch events to listeners", () => {
