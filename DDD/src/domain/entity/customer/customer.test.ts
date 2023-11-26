@@ -1,6 +1,10 @@
-import {describe, expect, test } from "bun:test";
+import {describe, expect, spyOn, test } from "bun:test";
 import Customer from "./customer";
 import Address from "../address/address";
+import EventDispatcher from "../../event/@shared/event-dispatcher";
+import FirstLogWhenCustomerIsCreated from "../../event/customer/handler/first-log-when-customer-is-created";
+import SecondLogWhenCustomerIsCreated from "../../event/customer/handler/second-log-when-customer-is-created";
+import CustomerCreatedEvent from "../../event/customer/customer-create.event";
 
 describe("Customer", () => {
     test("should throw error if ID is empty", () => {
@@ -57,4 +61,22 @@ describe("Customer", () => {
         customer.addRewardPoints(100);
         expect(customer.rewardPoints).toBe(200);
     })
+
+    test("should dispatch events to listeners", () => {
+        const customer = new Customer("1",  "Customer 1", "john@doe.com");
+        const spyFirstEventHandler = spyOn(customer.firstEventHandler, "handle");
+        const spySecondEventHandler = spyOn(customer.secondEventHandler, "handle");
+        customer.notifyCreatedEvent();
+        expect(customer.eventDispatcher.getEventHandlers["CustomerCreatedEvent"].length).toBe(2);
+        expect(spyFirstEventHandler).toHaveBeenCalled();
+        expect(spySecondEventHandler).toHaveBeenCalled();
+    });
+    test("should dispatch change Address EVENT to listeners", () => {
+        const customer = new Customer("1",  "Customer 1", "john@doe.com");
+        const address = new Address("Street 1", "City 1", "State 1", "Zip 1", "Country 1");
+        const spyChangeAddress = spyOn(customer.changeAddressEventHandler, "handle");
+        customer.notifyCreatedEvent();
+        customer.changeAddress(address);
+        expect(spyChangeAddress).toHaveBeenCalled();
+    });
 })

@@ -38,6 +38,15 @@ export default class Address {
    toString() {
         return `${this._street}, ${this._city}, ${this._state}, ${this._zip}, ${this._country}`;
     }
+    getValues() {
+        return {
+            street: this._street,
+            city: this._city,
+            state: this._state,
+            zip: this._zip,
+            country: this._country
+        }
+    }
 
     get street(): string {
         return this._street;

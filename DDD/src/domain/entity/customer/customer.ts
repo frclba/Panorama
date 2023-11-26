@@ -1,3 +1,9 @@
+import EventDispatcher from "../../event/@shared/event-dispatcher";
+import AddressChangeEvent from "../../event/customer/address-change.event";
+import LogWhenAddressIsChanged from "../../event/customer/handler/log-when-address-is-changed";
+import CustomerCreatedEvent from "../../event/customer/customer-create.event";
+import FirstLogWhenCustomerIsCreated from "../../event/customer/handler/first-log-when-customer-is-created";
+import SecondLogWhenCustomerIsCreated from "../../event/customer/handler/second-log-when-customer-is-created";
 import Address from "../address/address";
 
 export default class Customer {
@@ -7,12 +13,26 @@ export default class Customer {
     private _address!: Address;
     private _active: boolean = false;
     private _rewardPoints: number = 0;
-
+    eventDispatcher = new EventDispatcher();
+    firstEventHandler = new FirstLogWhenCustomerIsCreated();
+    secondEventHandler = new SecondLogWhenCustomerIsCreated();
+    changeAddressEventHandler = new LogWhenAddressIsChanged();
+    
     constructor(id: string, name: string, email: string) {
+        this.registerEvents();
         this._id = id;
         this._name = name;
         this._email = email;
         this.validate();
+    }
+    registerEvents() {
+        this.eventDispatcher.register("CustomerCreatedEvent", this.firstEventHandler);
+        this.eventDispatcher.register("CustomerCreatedEvent", this.secondEventHandler);
+        this.eventDispatcher.register("AddressChangeEvent", this.changeAddressEventHandler);
+    }
+    notifyCreatedEvent() {
+        const customerCreatedEvent = new CustomerCreatedEvent({id: this._id, name: this._name, email: this._email});
+        this.eventDispatcher.notify(customerCreatedEvent);
     }
     get name() {
         return this._name;
@@ -74,6 +94,9 @@ export default class Customer {
     
     changeAddress(address: Address) {
         this._address = address;
+        const values = address.getValues()
+        const addressChangeEvent = new AddressChangeEvent({...values})
+        this.eventDispatcher.notify(addressChangeEvent);
     }
 
 }
