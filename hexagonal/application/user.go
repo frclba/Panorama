@@ -1,6 +1,15 @@
 package application
-import "errors"
-import "strings"
+import (
+	"errors"
+	"strings"
+
+	"github.com/asaskevich/govalidator"
+)
+
+func init() {
+	govalidator.SetFieldsRequiredByDefault(true)
+}
+
 type UserInterface interface {
 	isValid() (bool, error)
 	Enable() error
@@ -18,17 +27,29 @@ const (
 
 
 type User struct {
-	ID string
-	Name string
-	Email string
-	Status string
-	Password string
+	ID string `valid:"uuidv4"`
+	Name string `valid:"required"`
+	Email string `valid:"email,required"`
+	Status string `valid:"required"`
 }
 
 
-// func (user *User) isValid() (bool, error) {
-// 	return true, nil
-// }
+func (user *User) isValid() (bool, error) {
+	if(user.Status == "") {
+		user.Status = STATUS_DISABLED
+	}
+	if(user.Status != STATUS_ENABLED && user.Status != STATUS_DISABLED) {
+		return false, errors.New("Invalid status value")
+	}
+	if (!strings.Contains(user.Email, "@educate.io")) {
+		return false, errors.New("Invalid email address, not an educate.io email address")
+	}
+	_, err := govalidator.ValidateStruct(user)
+	if err != nil{
+		return false, err
+	}
+	return true, nil
+}
 
 func (user *User) Enable() (bool, error) {
 	if strings.Contains(user.Email, "@educate.io") {
