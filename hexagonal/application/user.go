@@ -36,7 +36,7 @@ type UserPersistenceInterface interface {
 }
 
 type UserServiceInterface interface {
-	Get(id string)
+	Get(id string) (UserInterface, error)
 	Create(name string, email string) (UserInterface, error)
 	Enable(user UserInterface) (UserInterface, error)
 	Disable(user UserInterface) (UserInterface, error)

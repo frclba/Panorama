@@ -1,23 +1,28 @@
-package application
+package application_test
 
 import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+
+	"github.com/frclba/full-cycle/application"
+	mock_application "github.com/frclba/full-cycle/application/mocks"
 )
 
-func TestUserService_GET(t *testing.T) {
+func TestUserService_Get(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockUserPersistence := NewMockUserPersistenceInterface(ctrl)
-	mockUserPersistence.EXPECT().Get(gomock.Any()).Return(nil, nil).Times(1)
+	user := mock_application.NewMockUserInterface(ctrl)
+	persistence := mock_application.NewMockUserPersistenceInterface(ctrl)
+	persistence.EXPECT().Get(gomock.Any()).Return(user, nil).AnyTimes()
 
-	service := UserService{
-		Persistence: mockUserPersistence,
+	service := application.UserService{
+		Persistence: persistence,
 	}
 
-	_, err := service.Get("abc")
+	result, err := service.Get("abc")
 	require.Nil(t, err)
+	require.Equal(t, user, result)
 }

@@ -3,10 +3,9 @@ package application
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/require"
 )
-
 
 func TestUserEnable(t *testing.T) {
 	user := User{}
@@ -21,7 +20,7 @@ func TestUserEnable(t *testing.T) {
 	user.Email = "fernando@growyouragency.com"
 	success, err = user.Enable()
 	require.False(t, success)
-	require.Equal(t, "Invalid email address, not an educate.io email address", err.Error())
+	require.Equal(t, "invalid email address, not an educate.io email address", err.Error())
 }
 
 func TestUserDisable(t *testing.T) {
@@ -36,9 +35,8 @@ func TestUserDisable(t *testing.T) {
 	user.Email = "fernando@educate.io"
 	success, err = user.Disable()
 	require.False(t, success)
-	require.Equal(t, "The email should not be an educate.io email address to disable it", err.Error())
+	require.Equal(t, "the email should not be an educate.io email address to disable it", err.Error())
 }
-
 
 func TestUserIsValid(t *testing.T) {
 	user := User{}
@@ -53,7 +51,7 @@ func TestUserIsValid(t *testing.T) {
 
 	user.Status = "invalid status"
 	success, err = user.isValid()
-	require.Equal(t, "Invalid status value", err.Error())
+	require.Equal(t, "invalid status value", err.Error())
 
 	user.Status = STATUS_ENABLED
 	success, err = user.isValid()
@@ -61,5 +59,5 @@ func TestUserIsValid(t *testing.T) {
 
 	user.Email = "fernando@gmail.com"
 	success, err = user.isValid()
-	require.Equal(t, "Invalid email address, not an educate.io email address", err.Error())
+	require.Equal(t, "invalid email address, not an educate.io email address", err.Error())
 }
