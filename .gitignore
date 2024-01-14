@@ -5,3 +5,4 @@ DDD/drizzle/
 *.db
 *.sql
 *.toml
+hexagonal/bin/main
