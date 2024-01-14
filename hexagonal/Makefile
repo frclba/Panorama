@@ -8,3 +8,6 @@ run: build
 
 test:
 	@go test -v ./...
+
+mockgen:
+	mockgen -destination=application/mocks/application.go -source=application/user.go

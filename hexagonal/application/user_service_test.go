@@ -3,8 +3,8 @@ package application_test
 import (
 	"testing"
 
-	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/mock/gomock"
 
 	"github.com/frclba/full-cycle/application"
 	mock_application "github.com/frclba/full-cycle/application/mocks"
