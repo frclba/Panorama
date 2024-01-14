@@ -48,4 +48,20 @@ func TestUserService_Enable(t *testing.T) {
 
 	user := mock_application.NewMockUserInterface(ctrl)
 	user.EXPECT().Enable().Return(nil).AnyTimes()
+	user.EXPECT().Disable().Return(nil).AnyTimes()
+
+	persistence := mock_application.NewMockUserPersistenceInterface(ctrl)
+	persistence.EXPECT().Save(gomock.Any()).Return(user, nil).AnyTimes()
+	service := application.UserService{
+		Persistence: persistence,
+	}
+
+	result, err := service.Enable(user)
+	require.Nil(t, err)
+	require.Equal(t, user, result)
+
+	result, err = service.Disable(user)
+	require.Nil(t, err)
+	require.Equal(t, user, result)
+
 }

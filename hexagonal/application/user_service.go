@@ -42,3 +42,17 @@ func (s *UserService) Enable(user UserInterface) (UserInterface, error) {
 	}
 	return result, nil
 }
+
+func (s *UserService) Disable(user UserInterface) (UserInterface, error) {
+	err := user.Disable()
+
+	if err != nil {
+		return &User{}, err
+	}
+
+	result, err := s.Persistence.Save(user)
+	if err != nil {
+		return &User{}, err
+	}
+	return result, nil
+}
