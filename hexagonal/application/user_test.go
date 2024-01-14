@@ -15,13 +15,12 @@ func TestUserEnable(t *testing.T) {
 	user.Status = application.STATUS_DISABLED
 	user.Email = "fernando@educate.io"
 
-	success, err := user.Enable()
-	require.True(t, success)
+	err := user.Enable()
+
 	require.Nil(t, err)
 
 	user.Email = "fernando@growyouragency.com"
-	success, err = user.Enable()
-	require.False(t, success)
+	err = user.Enable()
 	require.Equal(t, "invalid email address, not an educate.io email address", err.Error())
 }
 
@@ -30,13 +29,11 @@ func TestUserDisable(t *testing.T) {
 	user.Name = "Fernando"
 	user.Status = application.STATUS_ENABLED
 	user.Email = "fernando@growyouragency.com"
-	success, err := user.Disable()
-	require.True(t, success)
+	err := user.Disable()
 	require.Nil(t, err)
 
 	user.Email = "fernando@educate.io"
-	success, err = user.Disable()
-	require.False(t, success)
+	err = user.Disable()
 	require.Equal(t, "the email should not be an educate.io email address to disable it", err.Error())
 }
 

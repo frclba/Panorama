@@ -124,11 +124,12 @@ func (mr *MockUserInterfaceMockRecorder) GetStatus() *gomock.Call {
 }
 
 // IsValid mocks base method.
-func (m *MockUserInterface) IsValid() bool {
+func (m *MockUserInterface) IsValid() (bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "IsValid")
 	ret0, _ := ret[0].(bool)
-	return ret0
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // IsValid indicates an expected call of IsValid.

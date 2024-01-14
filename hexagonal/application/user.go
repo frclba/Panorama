@@ -13,7 +13,7 @@ func init() {
 }
 
 type UserInterface interface {
-	IsValid() bool
+	IsValid() (bool, error)
 	Enable() error
 	Disable() error
 	GetID() string
@@ -79,20 +79,20 @@ func (user *User) IsValid() (bool, error) {
 	return true, nil
 }
 
-func (user *User) Enable() (bool, error) {
+func (user *User) Enable() error {
 	if strings.Contains(user.Email, "@educate.io") {
 		user.Status = STATUS_ENABLED
-		return true, nil
+		return nil
 	}
-	return false, errors.New("invalid email address, not an educate.io email address")
+	return errors.New("invalid email address, not an educate.io email address")
 }
 
-func (user *User) Disable() (bool, error) {
+func (user *User) Disable() error {
 	if !strings.Contains(user.Email, "@educate.io") {
 		user.Status = STATUS_DISABLED
-		return true, nil
+		return nil
 	}
-	return false, errors.New("the email should not be an educate.io email address to disable it")
+	return errors.New("the email should not be an educate.io email address to disable it")
 }
 
 func (user *User) GetID() string {
