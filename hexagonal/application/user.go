@@ -13,7 +13,7 @@ func init() {
 }
 
 type UserInterface interface {
-	isValid() (bool, error)
+	IsValid() bool
 	Enable() error
 	Disable() error
 	GetID() string
@@ -62,7 +62,7 @@ func NewUser() *User {
 	return &user
 }
 
-func (user *User) isValid() (bool, error) {
+func (user *User) IsValid() (bool, error) {
 	if user.Status == "" {
 		user.Status = STATUS_DISABLED
 	}

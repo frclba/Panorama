@@ -1,16 +1,18 @@
-package application
+package application_test
 
 import (
 	"testing"
 
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/require"
+
+	"github.com/frclba/full-cycle/application"
 )
 
 func TestUserEnable(t *testing.T) {
-	user := User{}
+	user := application.User{}
 	user.Name = "Fernando"
-	user.Status = STATUS_DISABLED
+	user.Status = application.STATUS_DISABLED
 	user.Email = "fernando@educate.io"
 
 	success, err := user.Enable()
@@ -24,9 +26,9 @@ func TestUserEnable(t *testing.T) {
 }
 
 func TestUserDisable(t *testing.T) {
-	user := User{}
+	user := application.User{}
 	user.Name = "Fernando"
-	user.Status = STATUS_ENABLED
+	user.Status = application.STATUS_ENABLED
 	user.Email = "fernando@growyouragency.com"
 	success, err := user.Disable()
 	require.True(t, success)
@@ -39,25 +41,25 @@ func TestUserDisable(t *testing.T) {
 }
 
 func TestUserIsValid(t *testing.T) {
-	user := User{}
+	user := application.User{}
 	user.ID = uuid.NewV4().String()
 	user.Name = "Fernando"
-	user.Status = STATUS_DISABLED
+	user.Status = application.STATUS_DISABLED
 	user.Email = "fernando@educate.io"
 
-	success, err := user.isValid()
+	success, err := user.IsValid()
 	require.Nil(t, err)
 	require.True(t, success)
 
 	user.Status = "invalid status"
-	success, err = user.isValid()
+	success, err = user.IsValid()
 	require.Equal(t, "invalid status value", err.Error())
 
-	user.Status = STATUS_ENABLED
-	success, err = user.isValid()
+	user.Status = application.STATUS_ENABLED
+	success, err = user.IsValid()
 	require.Nil(t, err)
 
 	user.Email = "fernando@gmail.com"
-	success, err = user.isValid()
+	success, err = user.IsValid()
 	require.Equal(t, "invalid email address, not an educate.io email address", err.Error())
 }
