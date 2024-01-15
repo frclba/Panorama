@@ -31,3 +31,59 @@ func (u *UserDb) Get(id string) (application.UserInterface, error) {
 
 	return &user, nil
 }
+
+func (u *UserDb) Save(user application.UserInterface) (application.UserInterface, error) {
+	var err error
+	var rows int
+	u.db.QueryRow("SELECT COUNT(*) FROM users WHERE id = ?", user.GetID()).Scan(&rows)
+
+	if rows == 0 {
+		_, err = u.create(user)
+	} else {
+		_, err = u.update(user)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (u *UserDb) create(user application.UserInterface) (application.UserInterface, error) {
+	stmt, err := u.db.Prepare("INSERT INTO users(id, name, email, status) VALUES(?,?,?,?)")
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = stmt.Exec(
+		user.GetID(),
+		user.GetName(),
+		user.GetEmail(),
+		user.GetStatus(),
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = stmt.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (u *UserDb) update(user application.UserInterface) (application.UserInterface, error) {
+	_, err := u.db.Exec("UPDATE users SET name = ?, email = ?, status = ? WHERE id = ?",
+		user.GetName(),
+		user.GetEmail(),
+		user.GetStatus(),
+		user.GetID())
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
