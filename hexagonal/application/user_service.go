@@ -4,6 +4,12 @@ type UserService struct {
 	Persistence UserPersistenceInterface
 }
 
+func NewUserService(persistence UserPersistenceInterface) *UserService {
+	return &UserService{
+		Persistence: persistence,
+	}
+}
+
 func (s *UserService) Get(id string) (UserInterface, error) {
 	user, err := s.Persistence.Get(id)
 	if err != nil {

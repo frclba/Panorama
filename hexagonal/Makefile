@@ -1,5 +1,5 @@
 build:
-	@go build -o bin/main ./application/
+	@go build -o bin/main ./
 	@chmod +x bin/main
 
 

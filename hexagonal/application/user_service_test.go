@@ -37,7 +37,7 @@ func TestUserService_Create(t *testing.T) {
 	service := application.UserService{
 		Persistence: persistence,
 	}
-	result, err := service.Create("Francisco", "francisco@educate.io")
+	result, err := service.Create("Fernando", "fernando@educate.io")
 	require.Nil(t, err)
 	require.Equal(t, user, result)
 }
