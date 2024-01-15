@@ -13,7 +13,10 @@ func main() {
 	Db, _ := sql.Open("sqlite3", "sqlite.db")
 	userDbAdapter := db2.NewUserDb(Db)
 	userService := application.NewUserService(userDbAdapter)
-	user, _ := userService.Create("Fernando", "fernando@educate.io")
+	user, _ := userService.Create("Fernando", "fernando@test.io")
 
-	userService.Enable(user)
+	_, err := userService.Enable(user)
+	if err != nil {
+		panic(err)
+	}
 }
