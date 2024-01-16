@@ -4,10 +4,12 @@ go 1.18
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
+	github.com/gorilla/mux v1.8.1
 	github.com/mattn/go-sqlite3 v1.14.19
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.8.4
+	github.com/urfave/negroni v1.0.0
 	go.uber.org/mock v0.4.0
 )
 
