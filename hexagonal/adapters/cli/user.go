@@ -12,7 +12,7 @@ func Run(service application.UserServiceInterface, action string, userId string,
 
 	switch action {
 	case "create":
-		user, err := service.Create("Fernando", "fernando@educate.io")
+		user, err := service.Create(userName, userEmail)
 		if err != nil {
 			return "", err
 		}

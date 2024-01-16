@@ -15,8 +15,8 @@ func TestRun(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	userName := "Fernando"
-	userEmail := "fernando@educate.io"
+	userName := "Fernando_test"
+	userEmail := "fernando+test@educate.io"
 	userStatus := "enabled"
 	userId := "abc"
 

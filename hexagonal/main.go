@@ -1,22 +1,11 @@
+/*
+Copyright © 2024 NAME HERE <EMAIL ADDRESS>
+
+*/
 package main
 
-import (
-	"database/sql"
-
-	_ "github.com/mattn/go-sqlite3"
-
-	db2 "github.com/frclba/full-cycle/adapters/db"
-	"github.com/frclba/full-cycle/application"
-)
+import "github.com/frclba/full-cycle/cmd"
 
 func main() {
-	Db, _ := sql.Open("sqlite3", "sqlite.db")
-	userDbAdapter := db2.NewUserDb(Db)
-	userService := application.NewUserService(userDbAdapter)
-	user, _ := userService.Create("Fernando", "fernando@test.io")
-
-	_, err := userService.Enable(user)
-	if err != nil {
-		panic(err)
-	}
+	cmd.Execute()
 }
