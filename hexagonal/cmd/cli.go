@@ -1,6 +1,3 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -9,7 +6,6 @@ import (
 	"github.com/frclba/full-cycle/adapters/cli"
 )
 
-// cliCmd represents the cli command
 var cliCmd = &cobra.Command{
 	Use:   "cli",
 	Short: "Full Cycle CLI",
