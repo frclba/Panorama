@@ -18,7 +18,15 @@ func MakeUserHandlers(r *mux.Router, n *negroni.Negroni, service application.Use
 
 	r.Handle("/user", n.With(
 		negroni.Wrap(createUser(service)),
-	)).Methods("GET", "OPTIONS")
+	)).Methods("POST", "OPTIONS")
+
+	r.Handle("/user/{id}/enable", n.With(
+		negroni.Wrap(enableUser(service)),
+	)).Methods("PUT", "OPTIONS")
+
+	r.Handle("/user/{id}/disable", n.With(
+		negroni.Wrap(disableUser(service)),
+	)).Methods("PUT", "OPTIONS")
 }
 
 func createUser(service application.UserServiceInterface) http.Handler {
@@ -43,6 +51,34 @@ func getUser(service application.UserServiceInterface) http.Handler {
 		user, err := service.Get(id)
 		checkError(w, err)
 		err = json.NewEncoder(w).Encode(user)
+		checkError(w, err)
+	})
+}
+
+func enableUser(service application.UserServiceInterface) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		vars := mux.Vars(r)
+		id := vars["id"]
+		user, err := service.Get(id)
+		checkError(w, err)
+		result, err := service.Enable(user)
+		checkError(w, err)
+		err = json.NewEncoder(w).Encode(result)
+		checkError(w, err)
+	})
+}
+
+func disableUser(service application.UserServiceInterface) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		vars := mux.Vars(r)
+		id := vars["id"]
+		user, err := service.Get(id)
+		checkError(w, err)
+		result, err := service.Disable(user)
+		checkError(w, err)
+		err = json.NewEncoder(w).Encode(result)
 		checkError(w, err)
 	})
 }
