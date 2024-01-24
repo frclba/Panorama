@@ -3,7 +3,7 @@ package handlers
 import (
 	"github.com/frclba/slick"
 	"github.com/frclba/slick/app/models"
-	"github.com/frclba/slick/app/views/profile"
+	"github.com/frclba/slick/app/views/userProfile"
 )
 
 func HandleUserProfile(c *slick.Context) error {
@@ -14,5 +14,5 @@ func HandleUserProfile(c *slick.Context) error {
 		Email:     "hemail@email.com",
 	}
 
-	return c.Render(profile.Index(user))
+	return c.Render(userProfile.Index(user))
 }
