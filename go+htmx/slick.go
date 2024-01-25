@@ -26,13 +26,27 @@ type ErrorHandler func(error, *Context) error
 type Slick struct {
 	ErrorHandler ErrorHandler
 	router       *httprouter.Router
+	middlewares  []Middleware
 }
+type Middleware func(Handler) Handler
 
 func New() *Slick {
 	return &Slick{
 		router:       httprouter.New(),
 		ErrorHandler: defaultErrorHandler,
 	}
+}
+
+func (s *Slick) PlugMiddleware(middlewares ...Middleware) {
+	s.middlewares = append(s.middlewares, middlewares...)
+}
+
+func (c *Context) Set(key any, value any) {
+	c.ctx = context.WithValue(c.ctx, key, value)
+}
+
+func (c *Context) Get(key string) any {
+	return c.ctx.Value(key)
 }
 
 func (s *Slick) Start(port string) error {
@@ -52,6 +66,11 @@ func (s *Slick) makeHTTPRouterHandler(h Handler) httprouter.Handle {
 			request:  r,
 			ctx:      context.Background(),
 		}
+
+		for i := len(s.middlewares) - 1; i >= 0; i-- {
+			h = s.middlewares[i](h)
+		}
+
 		if err := h(ctx); err != nil {
 			// TODO handle the error from the error handler huh?
 			s.ErrorHandler(err, ctx)
